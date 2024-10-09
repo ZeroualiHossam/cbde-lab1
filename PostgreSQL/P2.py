@@ -16,7 +16,6 @@ def load_frases_and_embeddings(cursor):
     return cursor.fetchall()
 
 def get_new_phrases():
-    """Cargar nuevas frases a comparar."""
     return [
         "as the first grandchild , megan spent a lot of time with her grandparents , and that in turn , meant she spent a lot of time with aidan .",
         "he had devoted hours to holding her and spoiling her rotten .",
@@ -71,7 +70,6 @@ def print_comparisons(new_phrases, comparison_results, metric_name):
             print(f" - Similar a frase en BD con ID {db_id}: \"{db_frase}\" con {metric_name}: {similarity:.4f}")
 
 def calculate_time_statistics(times):
-    """Calcula las estadísticas de los tiempos de comparación."""
     min_time = min(times)
     max_time = max(times)
     avg_time = statistics.mean(times)
