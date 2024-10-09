@@ -4,7 +4,7 @@ import os
 import time
 
 
-client = chromadb.Client()  # Solo inicializa el cliente
+client = chromadb.Client()
 
 collection_name = "frases_collection"
 collection = client.create_collection(name=collection_name)
@@ -17,7 +17,7 @@ def load_sentences_in_batches(file_path, batch_size=5000):
 
     with open(file_path, 'r', encoding='utf-8') as file:
         content = file.read()
-        sentences = content.splitlines()  # Dividir en oraciones
+        sentences = content.splitlines()
 
         sentence_data = [{"id": str(i), "text": sentence.strip()} for i, sentence in enumerate(sentences) if sentence.strip()]
 
@@ -25,14 +25,14 @@ def load_sentences_in_batches(file_path, batch_size=5000):
 
         for i in range(0, len(sentence_data), batch_size):
             batch = sentence_data[i:i + batch_size]
-            start_time = time.time()  # Inicio
+            start_time = time.time()
 
             collection.add(
                 ids=[item["id"] for item in batch],
                 documents=[item["text"] for item in batch]
             )
 
-            end_time = time.time()  # Fin
+            end_time = time.time()
             elapsed_time = end_time - start_time
             times.append(elapsed_time)
 
@@ -50,6 +50,5 @@ def load_sentences_in_batches(file_path, batch_size=5000):
             print(f"Tiempo total: {total_time:.4f} segundos")
             print(f"Tiempo promedio: {avg_time:.4f} segundos")
 if __name__ == '__main__':
-    file_path = '../Postgres/frases_extraidas.txt'  # Especifica la ruta de tu archivo de frases
-    load_sentences_in_batches(file_path, batch_size=5003)  # Ajusta el tamaño del lote según sea necesario
-
+    file_path = '../Postgres/frases_extraidas.txt'
+    load_sentences_in_batches(file_path, batch_size=5003)
