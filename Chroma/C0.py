@@ -3,14 +3,12 @@ import re
 import os
 import time
 
-# Inicializar el cliente de Chroma
+
 client = chromadb.Client()  # Solo inicializa el cliente
 
-# Crear (o conectar a) una colección llamada "frases"
 collection_name = "frases_collection"
 collection = client.create_collection(name=collection_name)
 
-# Cargar y dividir el archivo en oraciones
 def load_sentences_in_batches(file_path, batch_size=5000):
 
     if not os.path.exists(file_path):
@@ -21,13 +19,10 @@ def load_sentences_in_batches(file_path, batch_size=5000):
         content = file.read()
         sentences = content.splitlines()  # Dividir en oraciones
 
-        # Filtrar y preparar las oraciones
         sentence_data = [{"id": str(i), "text": sentence.strip()} for i, sentence in enumerate(sentences) if sentence.strip()]
 
-        # Lista para guardar el tiempo de las insertions
         times = []
 
-        # Insertar en lotes respetando el tamaño máximo permitido (5461)
         for i in range(0, len(sentence_data), batch_size):
             batch = sentence_data[i:i + batch_size]
             start_time = time.time()  # Inicio
@@ -43,7 +38,6 @@ def load_sentences_in_batches(file_path, batch_size=5000):
 
             print(f"Frases {i + 1} a {i + len(batch)} cargadas exitosamente en Chroma en {elapsed_time:.4f} segundos.")
 
-        # Calcular estadísticas
         if times:
             max_time = max(times)
             min_time = min(times)
